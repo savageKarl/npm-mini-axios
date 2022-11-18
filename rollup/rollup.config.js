@@ -26,9 +26,6 @@ const output = [
 ];
 
 const plugins = [
-  peerDepsExternal({
-    includeDependencies: true,
-  }),
   ts({
     tsconfig: path.resolve(__dirname, "tsconfig.rollup.json"),
   }),
@@ -38,7 +35,14 @@ const plugins = [
   resolve(),
 ];
 
-if (env === 'pro') plugins.push(terser())
+if (env === "pro") plugins.push(terser());
+// if (env === "pro")
+//   plugins.unshift(
+//     // 这个插件，生产环境，小程序特殊的npm编译不编译包依赖的其他包再用
+//     peerDepsExternal({
+//       includeDependencies: true,
+//     })
+//   );
 
 module.exports = {
   input: path.resolve(srcLibsPath, "index.ts"),

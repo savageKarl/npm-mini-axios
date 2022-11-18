@@ -1,4 +1,4 @@
-import _ from "lodash";
+import forEach from "lodash-es/forEach";
 
 import { HandlerItem,HandlersType, Callback } from "./types";
 
@@ -22,7 +22,7 @@ export class Interceptor {
   }
 
   forEach(fn: (v: HandlerItem, i: number) => any) {
-    _.forEach(this.handlers, function (v, i) {
+    forEach(this.handlers, function (v, i) {
       if (v) fn(v, i);
     });
   }

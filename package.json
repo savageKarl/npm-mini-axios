@@ -1,5 +1,5 @@
 {
-  "name": "mini-component-dev",
+  "name": "@savage181855/mini-axios",
   "version": "1.0.3",
   "main": "miniprogram_dist/index.js",
   "module": "miniprogram_dist/index.mjs",

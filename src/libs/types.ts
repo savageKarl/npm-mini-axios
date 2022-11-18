@@ -8,13 +8,6 @@ export type HandlerItem = { fulfilled: Callback; rejected: Callback } | null;
 
 export type HandlersType = HandlerItem[];
 
-export type NoBodyMethods = (url: string, config: AxiosRequestConfig) => any;
-export type BodyMethods = (
-  url: string,
-  data: AxiosRequestData,
-  config: AxiosRequestConfig
-) => any;
-
 export type AxiosRequestData =
   | string
   | WechatMiniprogram.IAnyObject
@@ -95,9 +88,7 @@ export interface TransitionalOptions {
   clarifyTimeoutError?: boolean;
 }
 
-export interface AxiosRequestConfig<
-  D extends string | WechatMiniprogram.IAnyObject | ArrayBuffer = any
-> {
+export interface AxiosRequestConfig<D = any> {
   url?: string;
   method?: Method;
   baseURL?: string;
@@ -108,36 +99,36 @@ export interface AxiosRequestConfig<
   enableQuic?: boolean;
   dataType?: string | "其他";
   forceCellularNetwork?: boolean;
-  transformRequest?: AxiosRequestTransformer | AxiosRequestTransformer[];
-  transformResponse?: AxiosResponseTransformer | AxiosResponseTransformer[];
+  // transformRequest?: AxiosRequestTransformer | AxiosRequestTransformer[];
+  // transformResponse?: AxiosResponseTransformer | AxiosResponseTransformer[];
   header?: AxiosRequestHeaders;
   params?: any;
-  paramsSerializer?: (params: any) => string;
+  // paramsSerializer?: (params: any) => string;
   data?: D;
   timeout?: number;
-  timeoutErrorMessage?: string;
-  withCredentials?: boolean;
+  // timeoutErrorMessage?: string;
+  // withCredentials?: boolean;
   adapter?: AxiosAdapter;
   // auth?: AxiosBasicCredentials;
   responseType?: "arraybuffer" | "text";
   // responseEncoding?: responseEncoding | string;
   // xsrfCookieName?: string;
   // xsrfHeaderName?: string;
-  onUploadProgress?: (progressEvent: any) => void;
-  onDownloadProgress?: (progressEvent: any) => void;
-  maxContentLength?: number;
-  validateStatus?: ((status: number) => boolean) | null;
-  maxBodyLength?: number;
-  maxRedirects?: number;
-  socketPath?: string | null;
-  httpAgent?: any;
-  httpsAgent?: any;
-  proxy?: AxiosProxyConfig | false;
+  // onUploadProgress?: (progressEvent: any) => void;
+  // onDownloadProgress?: (progressEvent: any) => void;
+  // maxContentLength?: number;
+  // validateStatus?: ((status: number) => boolean) | null;
+  // maxBodyLength?: number;
+  // maxRedirects?: number;
+  // socketPath?: string | null;
+  // httpAgent?: any;
+  // httpsAgent?: any;
+  // proxy?: AxiosProxyConfig | false;
   // cancelToken?: CancelToken;
-  decompress?: boolean;
-  transitional?: TransitionalOptions;
-  signal?: AbortSignal;
-  insecureHTTPParser?: boolean;
+  // decompress?: boolean;
+  // transitional?: TransitionalOptions;
+  // signal?: AbortSignal;
+  // insecureHTTPParser?: boolean;
 }
 
 // export interface HeadersDefaults {
@@ -168,21 +159,25 @@ export interface AxiosRequestConfig<
 //   request?: any;
 // }
 
-export type AxiosResponse<
-  T extends string | WechatMiniprogram.IAnyObject | ArrayBuffer
-> = Promise<WechatMiniprogram.RequestSuccessCallbackResult<T>>;
+export type AxiosResponse<T = any> = Promise<{
+  cookies: string[];
+  data: T;
+  header: WechatMiniprogram.IAnyObject;
+  profile: WechatMiniprogram.RequestProfile;
+  statusCode: number;
+  errMsg: string;
+}>;
 
-// export interface AxiosError<T = any, D = any> extends Error {
-//   config: AxiosRequestConfig<D>;
-//   code?: string;
-//   request?: any;
-//   response?: AxiosResponse<T, D>;
-//   isAxiosError: boolean;
-//   toJSON: () => object;
-// }
+export interface AxiosError<T = any, D = any> extends Error {
+  config: AxiosRequestConfig<D>;
+  code?: string;
+  request?: any;
+  // response?: AxiosResponse<T, D>;
+  isAxiosError: boolean;
+  toJSON: () => object;
+}
 
-export interface AxiosPromise<T extends ArrayBuffer = any>
-  extends Promise<AxiosResponse<T>> {}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 // export interface CancelStatic {
 //   new (message?: string): Cancel;

@@ -62,13 +62,6 @@ export declare type AxiosResponse<T = any> = Promise<{
     statusCode: number;
     errMsg: string;
 }>;
-export interface AxiosError<T = any, D = any> extends Error {
-    config: AxiosRequestConfig<D>;
-    code?: string;
-    request?: any;
-    isAxiosError: boolean;
-    toJSON: () => object;
-}
 export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
 }
 export declare type AxiosInstance<T> = {

@@ -1,8 +1,5 @@
 import {
   AxiosRequestConfig,
-  AxiosRequestData,
-  NoBodyMethods,
-  BodyMethods,
   AxiosResponse
 } from "./types";
 
