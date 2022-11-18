@@ -1,7 +1,9 @@
-import { HandlerType, Callback } from "./types";
+import _ from "lodash";
+
+import { HandlerItem,HandlersType, Callback } from "./types";
 
 export class Interceptor {
-  handlers: HandlerType = [];
+  handlers: HandlersType = [];
 
   constructor() {}
 
@@ -14,6 +16,14 @@ export class Interceptor {
     const index = this.handlers.length - 1;
     return index;
   }
-}
 
-const i = new Interceptor();
+  eject(index: number) {
+    if (this.handlers[index]) this.handlers[index] = null;
+  }
+
+  forEach(fn: (v: HandlerItem, i: number) => any) {
+    _.forEach(this.handlers, function (v, i) {
+      if (v) fn(v, i);
+    });
+  }
+}

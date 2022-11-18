@@ -1,11 +1,15 @@
-export function adapter(
-  config: WechatMiniprogram.RequestOption<
-    string | WechatMiniprogram.IAnyObject | ArrayBuffer
-  >
-) {
+import {
+  AxiosRequestConfig,
+  AxiosRequestData,
+  NoBodyMethods,
+  BodyMethods,
+  AxiosResponse
+} from "./types";
+
+export function adapter(config: AxiosRequestConfig):AxiosResponse<any> {
   return new Promise((resovle, reject) => {
     wx.request({
-      ...config,
+      ...(config as any),
       success(res) {
         resovle(res);
       },

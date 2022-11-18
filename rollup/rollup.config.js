@@ -1,11 +1,11 @@
-
-
 const path = require("path");
 const ts = require("rollup-plugin-typescript2");
 const del = require("rollup-plugin-delete");
 const commonjs = require("rollup-plugin-commonjs");
 const resolve = require("@rollup/plugin-node-resolve");
 const { terser } = require("rollup-plugin-terser");
+const peerDepsExternal = require("rollup-plugin-peer-deps-external");
+
 const config = require("../config/config.js");
 
 const { srcLibsPath, devLibsPath, distPath } = config;
@@ -26,6 +26,9 @@ const output = [
 ];
 
 const plugins = [
+  peerDepsExternal({
+    includeDependencies: true,
+  }),
   ts({
     tsconfig: path.resolve(__dirname, "tsconfig.rollup.json"),
   }),
@@ -36,7 +39,6 @@ const plugins = [
 ];
 
 if (env === 'pro') plugins.push(terser())
-
 
 module.exports = {
   input: path.resolve(srcLibsPath, "index.ts"),

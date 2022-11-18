@@ -1120,6 +1120,11 @@
     "estree-walker" "^2.0.2"
     "picomatch" "^2.3.1"
 
+"@savage181855/data-types@^1.0.4":
+  "integrity" "sha512-FgmJXFj7X+r5s0W1DNHEfoo0LhbFDKxmp973DZKM74Ff6H+flUr3heY4ihO2s8Qo5b5txXtxfXHeTMwmfRQf5A=="
+  "resolved" "https://registry.npmmirror.com/@savage181855/data-types/-/data-types-1.0.4.tgz"
+  "version" "1.0.4"
+
 "@tsconfig/node10@^1.0.7":
   "integrity" "sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA=="
   "resolved" "https://registry.npmmirror.com/@tsconfig/node10/-/node10-1.0.9.tgz"
@@ -1198,6 +1203,18 @@
   "integrity" "sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ=="
   "resolved" "https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.11.tgz"
   "version" "7.0.11"
+
+"@types/lodash-es@^4.17.6":
+  "integrity" "sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg=="
+  "resolved" "https://registry.npmmirror.com/@types/lodash-es/-/lodash-es-4.17.6.tgz"
+  "version" "4.17.6"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*", "@types/lodash@^4.14.189":
+  "integrity" "sha512-kb9/98N6X8gyME9Cf7YaqIMvYGnBSWqEci6tiettE6iJWH1XdJz/PO8LB0GtLCG7x8dU3KWhZT+lA1a35127tA=="
+  "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.189.tgz"
+  "version" "4.14.189"
 
 "@types/minimatch@*":
   "integrity" "sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA=="
@@ -4358,6 +4375,11 @@
   dependencies:
     "p-locate" "^4.1.0"
 
+"lodash-es@^4.17.21":
+  "integrity" "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
+  "resolved" "https://registry.npmmirror.com/lodash-es/-/lodash-es-4.17.21.tgz"
+  "version" "4.17.21"
+
 "lodash._basecopy@^3.0.0":
   "version" "3.0.1"
 
@@ -4515,10 +4537,12 @@
 
 "lodash@^4.17.21":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
-  "resolved" "https://registry.npmmirror.com/lodash/-/lodash-4.17.21.tgz"
+  "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
 
 "lodash@~1.0.1":
+  "integrity" "sha512-0VSEDVec/Me2eATuoiQd8IjyBMMX0fahob8YJ96V1go2RjvCk1m1GxmtfXn8RNSaLaTtop7fsuhhu9oLk3hUgA=="
+  "resolved" "https://registry.npmjs.org/lodash/-/lodash-1.0.2.tgz"
   "version" "1.0.2"
 
 "loud-rejection@^1.0.0":
@@ -5662,6 +5686,11 @@
   dependencies:
     "del" "^5.1.0"
 
+"rollup-plugin-peer-deps-external@^2.2.4":
+  "integrity" "sha512-AWdukIM1+k5JDdAqV/Cxd+nejvno2FVLVeZ74NKggm3Q5s9cbbcOgUPGdbxPi4BXu7xGaZ8HG12F+thImYu/0g=="
+  "resolved" "https://registry.npmmirror.com/rollup-plugin-peer-deps-external/-/rollup-plugin-peer-deps-external-2.2.4.tgz"
+  "version" "2.2.4"
+
 "rollup-plugin-scss@^3.0.0":
   "integrity" "sha512-UldNaNHEon2a5IusHvj/Nnwc7q13YDvbFxz5pfNbHBNStxGoUNyM+0XwAA/UafJ1u8XRPGdBMrhWFthrrGZdWQ=="
   "resolved" "https://registry.npmmirror.com/rollup-plugin-scss/-/rollup-plugin-scss-3.0.0.tgz"
@@ -5697,7 +5726,7 @@
   dependencies:
     "estree-walker" "^0.6.1"
 
-"rollup@^1.20.0||^2.0.0||^3.0.0", "rollup@^2.0.0", "rollup@^2.78.0||^3.0.0", "rollup@^2.79.1", "rollup@>=1.12.0", "rollup@>=1.26.3":
+"rollup@*", "rollup@^1.20.0||^2.0.0||^3.0.0", "rollup@^2.0.0", "rollup@^2.78.0||^3.0.0", "rollup@^2.79.1", "rollup@>=1.12.0", "rollup@>=1.26.3":
   "integrity" "sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw=="
   "resolved" "https://registry.npmmirror.com/rollup/-/rollup-2.79.1.tgz"
   "version" "2.79.1"
