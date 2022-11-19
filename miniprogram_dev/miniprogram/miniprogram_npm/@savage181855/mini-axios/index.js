@@ -1,3 +1,7 @@
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
 /**
  * Removes all key-value entries from the list cache.
  *
@@ -2198,12 +2202,6 @@ function adapter(config) {
     });
 }
 
-function dispatchRequest(config) {
-    // 在这里进行，baseUrl拼接，转换数据的操作等等。
-    config.url = config.baseURL ? config.baseURL + config.url : config.url;
-    return adapter(config);
-}
-
 /**
  * A specialized version of `_.forEach` for arrays without support for
  * iteratee shorthands.
@@ -2387,6 +2385,32 @@ function forEach(collection, iteratee) {
   return func(collection, castFunction(iteratee));
 }
 
+function extend(target, source, thisArg) {
+    forEach(source, function (val, key) {
+        if (dataTypes.isObject(thisArg) && typeof val === 'function') {
+            target[key] = val.bind(thisArg);
+        }
+        else {
+            target[key] = val;
+        }
+    });
+    return target;
+}
+function serialize(obj) {
+    return Object.keys(obj)
+        .map((key) => `${key}=${obj[key]}`)
+        .join("&");
+}
+
+function dispatchRequest(config) {
+    // 在这里进行，baseUrl拼接，转换数据的操作等等。
+    config.url = config.baseURL ? config.baseURL + config.url : config.url;
+    if ((config.method === "get" || config.method === "GET") && config.params) {
+        config.url = config.url + "?" + serialize(config.params);
+    }
+    return adapter(config);
+}
+
 class Interceptor {
     constructor() {
         this.handlers = [];
@@ -2411,7 +2435,6 @@ class Interceptor {
     }
 }
 
-// import _ from "lodash-es";
 class Axios {
     constructor(defaults) {
         this.defaults = {};
@@ -2420,25 +2443,32 @@ class Axios {
             response: new Interceptor(),
         };
         this.defaults = defaults || {};
-        // for (let k of bodyMethods) {
-        //   this[k] = <T>(
-        //     url: string,
-        //     data: AxiosRequestData,
-        //     config: AxiosRequestConfig
-        //   ) => {
-        //     return this.request<T>(
-        //       _.merge(config, {
-        //         method: k,
-        //         url,
-        //         data,
-        //       })
-        //     );
-        //   };
-        // }
+        const methods = ["get", "delete", "head", "options"];
+        for (let k of methods) {
+            this[k] = (url, config) => {
+                return this.request(merge$1(config, {
+                    method: k,
+                    url,
+                    data: (config || {}).data,
+                }));
+            };
+        }
+        const bodyMethods = ["post", "put"];
+        for (let k of bodyMethods) {
+            this[k] = (url, data, config) => {
+                return this.request(merge$1(config, {
+                    method: k,
+                    url,
+                    data,
+                }));
+            };
+        }
     }
     request(config) {
-        if (dataTypes.isString(config)) ;
-        // config = _.merge(this.defaults, config);
+        if (dataTypes.isString(config)) {
+            config = merge$1({ url: arguments[0] }, arguments[1]);
+        }
+        config = merge$1(this.defaults, config);
         let promise = Promise.resolve(config);
         let chain = [];
         this.interceptors.request.forEach(function (interceptors) {
@@ -2492,28 +2522,16 @@ const defaultConfig = {
     responseType: "text",
 };
 
-function extend(target, source, thisArg) {
-    forEach(source, function (val, key) {
-        if (dataTypes.isObject(thisArg) && dataTypes.isFunction(val)) {
-            target[key] = val.bind(thisArg);
-        }
-        else {
-            target[key] = val;
-        }
-    });
-    return target;
-}
-
 function getInstance(config) {
     const axios = new Axios(config);
     const instance = axios.request.bind(axios);
-    extend(instance, Axios.prototype, axios);
+    extend(instance, axios, axios);
     instance.create = (config) => {
-        getInstance(merge$1(defaultConfig, config));
+        return getInstance(merge$1(defaultConfig, config));
     };
     return instance;
 }
 const instance = getInstance(defaultConfig);
 
-export { instance as axios };
-//# sourceMappingURL=index.mjs.map
+exports.axios = instance;
+//# sourceMappingURL=index.js.map

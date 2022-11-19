@@ -12,14 +12,14 @@ export * from "./types";
 function getInstance(config: AxiosRequestConfig) {
   const axios = new Axios(config);
   const instance = axios.request.bind(axios) as AxiosInstance<Axios>;
-
-  extend(instance, Axios.prototype, axios);
+  extend(instance, axios, axios);
 
   (instance as any).create = (config: AxiosRequestConfig) => {
-    getInstance(merge(defaultConfig, config));
+    return getInstance(merge(defaultConfig, config));
   };
   return instance;
 }
 
 const instance = getInstance(defaultConfig);
+
 export { instance as axios };

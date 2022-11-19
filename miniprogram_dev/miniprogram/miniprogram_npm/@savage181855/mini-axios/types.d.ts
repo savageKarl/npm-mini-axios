@@ -74,4 +74,5 @@ export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {
 export declare type AxiosInstance<T> = {
     (config: AxiosRequestConfig): AxiosPromise;
     (url: string, config?: AxiosRequestConfig): AxiosPromise;
+    create: (config?: AxiosRequestConfig) => AxiosInstance<T>;
 } & T;

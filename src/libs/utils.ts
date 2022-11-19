@@ -8,7 +8,7 @@ export function extend(
   thisArg: any
 ) {
   forEach(source, function (val, key) {
-    if (dataTypes.isObject(thisArg) && dataTypes.isFunction(val)) {
+    if (dataTypes.isObject(thisArg) && typeof val === 'function') {
       target[key] = (val as Function).bind(thisArg);
     } else {
       target[key] = val;
@@ -21,10 +21,17 @@ export function each<T extends object>(
   obj: T,
   fn: (v: T[keyof T], i: keyof T, obj: T) => unknown
 ) {
-  if (dataTypes.isObject(obj) || dataTypes.isArray(obj)) {
+  if (typeof obj == "object") {
+    debugger;
     for (let k in obj) {
       const res = fn(obj[k], k, obj);
-      if (dataTypes.isBoolean(res) && String(res) === 'false') break;
+      if (dataTypes.isBoolean(res) && String(res) === "false") break;
     }
   }
+}
+
+export function serialize(obj: WechatMiniprogram.IAnyObject) {
+  return Object.keys(obj)
+    .map((key) => `${key}=${obj[key]}`)
+    .join("&");
 }
