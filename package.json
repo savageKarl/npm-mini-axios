@@ -7,12 +7,13 @@
   "license": "GPL-3.0",
   "description": "基于 gulp4 + rollup2 搭建的微信小程序组件库打包脚手架",
   "scripts": {
-    "devComponent": "cross-env NODE_ENV=dev gulp watch",
-    "buildComponent": "cross-env NODE_ENV=pro gulp build",
-    "devLibs": "cross-env NODE_ENV=dev rollup -c ./rollup/rollup.config.js -w",
-    "buildLibs": "cross-env NODE_ENV=pro rollup -c ./rollup/rollup.config.js",
-    "dev": "concurrently \"npm run devComponent\" \"npm run devLibs\" ",
-    "build": "concurrently \"npm run buildComponent\" \"npm run buildLibs\" "
+    "d:com": "concurrently \"cross-env NODE_ENV=dev gulp watch\" \"npm run shell\"  ",
+    "b:com": "cross-env NODE_ENV=pro gulp build",
+    "d:lib": "concurrently \"cross-env NODE_ENV=dev rollup -c ./rollup/rollup.config.js -w\" \"npm run shell\"  ",
+    "b:lib": "cross-env NODE_ENV=pro rollup -c ./rollup/rollup.config.js",
+    "shell": "node ./gulpfile.ts/script.js",
+    "dev": "concurrently \"npm run d:com\" \"npm run d:lib\" ",
+    "build": "concurrently \"npm run b:com\" \"npm run b:lib\" "
   },
   "files": [
     "/miniprogram_dist",

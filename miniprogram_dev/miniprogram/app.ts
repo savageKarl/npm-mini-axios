@@ -1,6 +1,3 @@
-import { axios, AxiosInstance } from "./libs";
-
-console.debug()
 
 App<IAppOption>({
   globalData: {},

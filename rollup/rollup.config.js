@@ -12,37 +12,54 @@ const { srcLibsPath, devLibsPath, distPath } = config;
 
 const env = process.env.NODE_ENV;
 
+
+
 const output = [
   {
     format: "esm",
-    file: path.resolve(env === "dev" ? devLibsPath : distPath, "index.mjs"),
+    file: path.resolve(distPath, "index.mjs"),
     sourcemap: true,
   },
   {
     format: "cjs",
-    file: path.resolve(env === "dev" ? devLibsPath : distPath, "index.js"),
+    file: path.resolve(distPath, "index.js"),
     sourcemap: true,
   },
 ];
+
+if (env === "dev") {
+  output.push(
+    {
+      format: "esm",
+      file: path.resolve(devLibsPath, "index.mjs"),
+      sourcemap: true,
+    },
+    {
+      format: "cjs",
+      file: path.resolve(devLibsPath, "index.js"),
+      sourcemap: true,
+    }
+  );
+}
 
 const plugins = [
   ts({
     tsconfig: path.resolve(__dirname, "tsconfig.rollup.json"),
   }),
   // let it empty the dist, because rollup faster than gulp
-  del({ targets: path.resolve(distPath, "*") }),
+  del({ targets: [path.resolve(distPath, "*"), devLibsPath] }),
   commonjs(),
   resolve(),
 ];
 
-if (env === "pro") plugins.push(terser());
-// if (env === "pro")
-//   plugins.unshift(
-//     // 这个插件，生产环境，小程序特殊的npm编译不编译包依赖的其他包再用
-//     peerDepsExternal({
-//       includeDependencies: true,
-//     })
-//   );
+if (env === "pro") {
+  plugins.push(terser());
+  plugins.unshift(
+    peerDepsExternal({
+      includeDependencies: true,
+    })
+  );
+}
 
 module.exports = {
   input: path.resolve(srcLibsPath, "index.ts"),
