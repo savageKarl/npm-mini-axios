@@ -4,11 +4,11 @@ import { dataTypes } from "@savage181855/data-types";
 import { dispatchRequest } from "./dispatchRequest";
 import { Interceptor } from "./interceptor";
 
-import { AxiosRequestConfig, AxiosRequestData, AxiosPromise } from "./types";
+import { AxiosRequestConfig, AxiosRequestData, AxiosPromise, Callback } from "./types";
 
 export class Axios {
-  public defaults = {} as AxiosRequestConfig;
-  public interceptors = {
+  defaults = {} as AxiosRequestConfig;
+  interceptors = {
     request: new Interceptor(),
     response: new Interceptor(),
   };
@@ -19,8 +19,8 @@ export class Axios {
     const methods = ["get", "delete", "head", "options"] as const;
 
     for (let k of methods) {
-      this[k] = <T>(url: string, config: AxiosRequestConfig) => {
-        return this.request<T>(
+      Axios.prototype[k] = <T>(url: string, config: AxiosRequestConfig) => {
+        return Axios.prototype.request<T>(
           merge(config, {
             method: k,
             url,
@@ -32,12 +32,12 @@ export class Axios {
 
     const bodyMethods = ["post", "put"] as const;
     for (let k of bodyMethods) {
-      this[k] = <T>(
+      Axios.prototype[k] = <T>(
         url: string,
         data: AxiosRequestData,
         config: AxiosRequestConfig
       ) => {
-        return this.request<T>(
+        return Axios.prototype.request<T>(
           merge(config, {
             method: k,
             url,
@@ -53,10 +53,10 @@ export class Axios {
       config = merge({ url: arguments[0] }, arguments[1]);
     }
 
-    config = merge(this.defaults, config);
-
+    config = merge({}, this.defaults, config);
     let promise = Promise.resolve(config);
-    let chain = [];
+
+    const chain: any[] = [];
 
     this.interceptors.request.forEach(function (interceptors) {
       if (interceptors) {

@@ -3,7 +3,7 @@ import { Axios } from "./axios";
 
 import { defaultConfig } from "./defaultConfig";
 
-import { extend } from "./utils";
+import { extend, bind } from "./utils";
 
 import { AxiosRequestConfig, AxiosInstance } from "./types";
 
@@ -11,8 +11,10 @@ export * from "./types";
 
 function getInstance(config: AxiosRequestConfig) {
   const axios = new Axios(config);
-  const instance = axios.request.bind(axios) as AxiosInstance<Axios>;
-  extend(instance, axios, axios);
+  const instance = Axios.prototype.request.bind(axios) as AxiosInstance<Axios>;
+  
+  extend(instance, axios);
+  extend(instance, Axios.prototype, axios);
 
   (instance as any).create = (config: AxiosRequestConfig) => {
     return getInstance(merge(defaultConfig, config));

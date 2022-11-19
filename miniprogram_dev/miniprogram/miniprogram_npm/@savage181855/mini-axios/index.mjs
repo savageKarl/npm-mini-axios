@@ -2198,6 +2198,41 @@ function adapter(config) {
     });
 }
 
+function extend(target, source, thisArg) {
+    each(source, function (val, key) {
+        if (dataTypes.isObject(thisArg) && typeof val === "function") {
+            target[key] = val.bind(thisArg);
+        }
+        else {
+            target[key] = val;
+        }
+    });
+    return target;
+}
+function each(obj, fn) {
+    if (typeof obj == "object") {
+        const keys = Reflect.ownKeys(obj);
+        for (let k of keys) {
+            const res = fn(obj[k], k, obj);
+            if (dataTypes.isBoolean(res) && String(res) === "false")
+                break;
+        }
+    }
+}
+function serialize(obj) {
+    return Object.keys(obj)
+        .map((key) => `${key}=${obj[key]}`)
+        .join("&");
+}
+
+function dispatchRequest(config) {
+    config.url = config.baseURL ? config.baseURL + config.url : config.url;
+    if ((config.method === "get" || config.method === "GET") && config.params) {
+        config.url = config.url + "?" + serialize(config.params);
+    }
+    return adapter(config);
+}
+
 /**
  * A specialized version of `_.forEach` for arrays without support for
  * iteratee shorthands.
@@ -2381,32 +2416,6 @@ function forEach(collection, iteratee) {
   return func(collection, castFunction(iteratee));
 }
 
-function extend(target, source, thisArg) {
-    forEach(source, function (val, key) {
-        if (dataTypes.isObject(thisArg) && typeof val === 'function') {
-            target[key] = val.bind(thisArg);
-        }
-        else {
-            target[key] = val;
-        }
-    });
-    return target;
-}
-function serialize(obj) {
-    return Object.keys(obj)
-        .map((key) => `${key}=${obj[key]}`)
-        .join("&");
-}
-
-function dispatchRequest(config) {
-    // 在这里进行，baseUrl拼接，转换数据的操作等等。
-    config.url = config.baseURL ? config.baseURL + config.url : config.url;
-    if ((config.method === "get" || config.method === "GET") && config.params) {
-        config.url = config.url + "?" + serialize(config.params);
-    }
-    return adapter(config);
-}
-
 class Interceptor {
     constructor() {
         this.handlers = [];
@@ -2441,8 +2450,8 @@ class Axios {
         this.defaults = defaults || {};
         const methods = ["get", "delete", "head", "options"];
         for (let k of methods) {
-            this[k] = (url, config) => {
-                return this.request(merge$1(config, {
+            Axios.prototype[k] = (url, config) => {
+                return Axios.prototype.request(merge$1(config, {
                     method: k,
                     url,
                     data: (config || {}).data,
@@ -2451,8 +2460,8 @@ class Axios {
         }
         const bodyMethods = ["post", "put"];
         for (let k of bodyMethods) {
-            this[k] = (url, data, config) => {
-                return this.request(merge$1(config, {
+            Axios.prototype[k] = (url, data, config) => {
+                return Axios.prototype.request(merge$1(config, {
                     method: k,
                     url,
                     data,
@@ -2464,9 +2473,9 @@ class Axios {
         if (dataTypes.isString(config)) {
             config = merge$1({ url: arguments[0] }, arguments[1]);
         }
-        config = merge$1(this.defaults, config);
+        config = merge$1({}, this.defaults, config);
         let promise = Promise.resolve(config);
-        let chain = [];
+        const chain = [];
         this.interceptors.request.forEach(function (interceptors) {
             if (interceptors) {
                 chain.push(interceptors === null || interceptors === void 0 ? void 0 : interceptors.fulfilled, interceptors === null || interceptors === void 0 ? void 0 : interceptors.rejected);
@@ -2520,8 +2529,9 @@ const defaultConfig = {
 
 function getInstance(config) {
     const axios = new Axios(config);
-    const instance = axios.request.bind(axios);
-    extend(instance, axios, axios);
+    const instance = Axios.prototype.request.bind(axios);
+    extend(instance, axios);
+    extend(instance, Axios.prototype, axios);
     instance.create = (config) => {
         return getInstance(merge$1(defaultConfig, config));
     };
