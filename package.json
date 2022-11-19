@@ -1,6 +1,6 @@
 {
   "name": "@savage181855/mini-axios",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "miniprogram_dist/index.js",
   "module": "miniprogram_dist/index.mjs",
   "author": "savage",
@@ -67,7 +67,6 @@
   },
   "dependencies": {
     "@savage181855/data-types": "^1.0.4",
-    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
   }
 }

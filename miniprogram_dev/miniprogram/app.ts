@@ -44,25 +44,24 @@ const p = axios({
 
   // console.debug(a)
 
-
-// axios
-//   .all([
-//     axios({
-//       url: "users/login",
-//       method: "post",
-//       data: {
-//         user_name: "admin",
-//         password: "123456",
-//       },
-//     }),
-//     axios({
-//       url: "address",
-//       method: "get",
-//     }),
-//   ])
-//   .then((res) => {
-//     console.debug(res);
-//   });
+axios
+  .race([
+    axios({
+      url: "users/login",
+      method: "post",
+      data: {
+        user_name: "admin",
+        password: "123456",
+      },
+    }),
+    axios({
+      url: "address",
+      method: "get",
+    }),
+  ])
+  .then((res) => {
+    console.debug(res);
+  });
 
 App<IAppOption>({
   globalData: {},
