@@ -2,7 +2,6 @@ const path = require("path");
 const { execFile } = require("node:child_process");
 const config = require("../config/config");
 const pkg = require("../package.json");
-const shell = require("shelljs");
 
 // const script = [
 //   "cd " + process.cwd(),
