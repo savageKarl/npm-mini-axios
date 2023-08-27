@@ -5,5 +5,7 @@
 ## 安装
 
 ```
-npm i @savage181855/mini-axios
+
 ```
+
+wait....
